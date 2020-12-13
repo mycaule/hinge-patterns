@@ -71,73 +71,53 @@ object Hinge {
     val West = Value("W")
   }
 
-  case class Shape(x: Integer, y: Integer) {
-    def check(pos: Position): Boolean = (0 <= pos.x && pos.x <= x && 0 <= pos.y && pos.y <= y)
-  }
-
-  object Shape {
-    def parse(s: String) = {
-      val pattern = "([0-9]+) ([0-9]+)".r
-
-      s match {
-        case pattern(x, y) => Some(Shape(x.toInt, y.toInt))
-        case _             => None
-      }
-    }
-  }
+  case class Shape(x: Integer, y: Integer)
 
   case class Position(x: Integer, y: Integer, d: Direction.Direction) {
     override def toString = s"$x $y $d"
   }
 
-  object Position {
-    def parse(s: String) = {
-      val pattern = "([0-9]+) ([0-9]+) ([A-Z]+)".r
-
-      s match {
-        case pattern(x, y, d) => Some(Position(x.toInt, y.toInt, Direction.withName(d)))
-        case _                => None
-      }
-    }
-  }
-
   def fold(shape: Shape)(pos: Position, cmd: Command.Command) = {
     val newPos = cmd match {
-      case Command.Nothing => pos
+      case Command.Nothing => pos.d match {
+        case Direction.North => pos.copy(y = pos.y + 1)
+        case Direction.South => pos.copy(y = pos.y - 1)
+        case Direction.East  => pos.copy(x = pos.x + 1)
+        case Direction.West  => pos.copy(x = pos.x - 1)
+      }
       case Command.Left => pos.d match {
+        case Direction.North => pos.copy(d = Direction.West, x = pos.x - 1)
+        case Direction.South => pos.copy(d = Direction.East, x = pos.x + 1)
+        case Direction.East  => pos.copy(d = Direction.North, y = pos.y + 1)
+        case Direction.West  => pos.copy(d = Direction.South, y = pos.y - 1)
+      }
+      case Command.Right => pos.d match {
+        case Direction.North => pos.copy(d = Direction.East, x = pos.x + 1)
+        case Direction.South => pos.copy(d = Direction.West, x = pos.x - 1)
+        case Direction.East  => pos.copy(d = Direction.South, y = pos.y - 1)
+        case Direction.West  => pos.copy(d = Direction.North, y = pos.y + 1)
+      }
+      case Command.Down => pos.d match {
+        case Direction.North => pos.copy(d = Direction.South, y = pos.y - 1)
+        case Direction.South => pos.copy(d = Direction.North, y = pos.y + 1)
+        case Direction.East  => pos.copy(d = Direction.West, x = pos.x - 1)
+        case Direction.West  => pos.copy(d = Direction.East, x = pos.x + 1)
+      }
+      case Command.LeftDown => pos.d match {
+        case Direction.North => pos.copy(d = Direction.East, x = pos.x + 1)
+        case Direction.South => pos.copy(d = Direction.West, x = pos.x - 1)
+        case Direction.East  => pos.copy(d = Direction.South, y = pos.y - 1)
+        case Direction.West  => pos.copy(d = Direction.North, y = pos.y + 1)
+      }
+      case Command.RightDown => pos.d match {
         case Direction.North => pos.copy(d = Direction.West)
         case Direction.South => pos.copy(d = Direction.East)
         case Direction.East  => pos.copy(d = Direction.North)
         case Direction.West  => pos.copy(d = Direction.South)
       }
-      case Command.Right => pos.d match {
-        case Direction.North => pos.copy(d = Direction.East)
-        case Direction.South => pos.copy(d = Direction.West)
-        case Direction.East  => pos.copy(d = Direction.South)
-        case Direction.West  => pos.copy(d = Direction.North)
-      }
-      case Command.Down => pos.d match {
-        case Direction.North => pos.copy(y = pos.y + 1)
-        case Direction.South => pos.copy(y = pos.y - 1)
-        case Direction.East  => pos.copy(x = pos.x + 1)
-        case Direction.West  => pos.copy(x = pos.x - 1)
-      }
-      case Command.LeftDown => pos.d match {
-        case Direction.North => pos.copy(y = pos.y + 1)
-        case Direction.South => pos.copy(y = pos.y - 1)
-        case Direction.East  => pos.copy(x = pos.x + 1)
-        case Direction.West  => pos.copy(x = pos.x - 1)
-      }
-      case Command.RightDown => pos.d match {
-        case Direction.North => pos.copy(y = pos.y + 1)
-        case Direction.South => pos.copy(y = pos.y - 1)
-        case Direction.East  => pos.copy(x = pos.x + 1)
-        case Direction.West  => pos.copy(x = pos.x - 1)
-      }
     }
 
-    // The mower does not move if we try to make it go out
-    if (shape.check(newPos)) newPos else pos
+    newPos
   }
 
   def main(args: Array[String]): Unit = {
