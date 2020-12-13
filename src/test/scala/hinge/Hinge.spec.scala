@@ -46,8 +46,8 @@ class HingeSpec extends FlatSpec with Matchers {
     shape.check(Position(5, 5, North)) shouldBe true
   }
 
-  // it should "solve simple examples" in {
-  //   Command.parse(Seq(0, 1, 0, 1, 0, 2)).foldLeft(Position(1, 2, North))(Hinge.fold(shape)) shouldBe Position(1, 3, North)
-  //   Command.parse(Seq(0, 1, 0, 1, 2, 3, 4)).foldLeft(Position(3, 3, East))(Hinge.fold(shape)) shouldBe Position(5, 1, East)
-  // }
+  it should "solve simple examples" in {
+    Command.parse(Seq(0, 1, 0, 1, 0, 2)).foldLeft(Position(1, 2, North))(Hinge.fold(shape)) shouldBe Position(1, 2, West)
+    Command.parse(Seq(0, 1, 0, 1, 2, 3, 4)).foldLeft(Position(3, 3, East))(Hinge.fold(shape)) shouldBe Position(3, 5, North)
+  }
 }

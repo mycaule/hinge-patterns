@@ -1,7 +1,7 @@
 ### Hinge Patterns
 
 <p align="center">
-  <a href="https://github.com/mycaule/hinge_patterns/actions"><img src="https://github.com/mycaule/hinge_patterns/workflows/Scala%20CI/badge.svg?branch=master" alt="Build Status"></a>
+  <a href="https://github.com/mycaule/hinge_patterns/actions"><img src="https://github.com/mycaule/hinge_patterns/workflows/Scala%20CI/badge.svg?branch=main" alt="Build Status"></a>
   <br>
   <br>
 </p>
@@ -47,3 +47,4 @@ Seq(1, 1, 1, 0, 2, 2, 0, 3, 1, 1, 1, 2, 2, 2, 0, 3, 1, 1, 0, 2, 2, 2)
 - [Nadia Benbernou et al. - Universal Hinge Patterns for Folding Strips Efficiently into Any Grid Polyhedron](http://erikdemaine.org/papers/StripsGrid_WADS2017/paper.pdf)
 - [Erik Demaine - Strip Folding Font](http://erikdemaine.org/fonts/strip/)
 - [Roger Mansuy's tweet](https://twitter.com/roger_mansuy/status/1336713975548014592)
+- Similar to the mower problem in [`mycaule/bb-assessment`](https://github.com/mycaule/bb-assessment)

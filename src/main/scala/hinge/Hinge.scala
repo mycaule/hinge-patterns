@@ -14,8 +14,6 @@ object Hinge {
   }
 
   implicit class StringImprovements(s: String) {
-    def increment: String = s.map(c => (c + 1).toChar)
-
     private def encode(c: Char): Seq[Integer] = {
       c match {
         case 'A' => Seq(1, 0, 0, 0, 1, 0, 2, 0, 1, 0, 0, 3, 0, 0, 4, 0, 2)
@@ -105,6 +103,7 @@ object Hinge {
 
   def fold(shape: Shape)(pos: Position, cmd: Command.Command) = {
     val newPos = cmd match {
+      case Command.Nothing => pos
       case Command.Left => pos.d match {
         case Direction.North => pos.copy(d = Direction.West)
         case Direction.South => pos.copy(d = Direction.East)
@@ -118,6 +117,18 @@ object Hinge {
         case Direction.West  => pos.copy(d = Direction.North)
       }
       case Command.Down => pos.d match {
+        case Direction.North => pos.copy(y = pos.y + 1)
+        case Direction.South => pos.copy(y = pos.y - 1)
+        case Direction.East  => pos.copy(x = pos.x + 1)
+        case Direction.West  => pos.copy(x = pos.x - 1)
+      }
+      case Command.LeftDown => pos.d match {
+        case Direction.North => pos.copy(y = pos.y + 1)
+        case Direction.South => pos.copy(y = pos.y - 1)
+        case Direction.East  => pos.copy(x = pos.x + 1)
+        case Direction.West  => pos.copy(x = pos.x - 1)
+      }
+      case Command.RightDown => pos.d match {
         case Direction.North => pos.copy(y = pos.y + 1)
         case Direction.South => pos.copy(y = pos.y - 1)
         case Direction.East  => pos.copy(x = pos.x + 1)
